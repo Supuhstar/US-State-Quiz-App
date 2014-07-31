@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg
+   xmlns:dc="http://purl.org/dc/elements/1.1/"
+   xmlns:cc="http://creativecommons.org/ns#"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   version="1.1"
+   width="92.614159"
+   height="98.356728"
+   id="svg2"
+   inkscape:version="0.48.4 r9939"
+   sodipodi:docname="west_virginia.svg">
+  <metadata
+     id="metadata64">
+    <rdf:RDF>
+      <cc:Work
+         rdf:about="">
+        <dc:format>image/svg+xml</dc:format>
+        <dc:type
+           rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
+        <dc:title></dc:title>
+      </cc:Work>
+    </rdf:RDF>
+  </metadata>
+  <defs
+     id="defs62" />
+  <sodipodi:namedview
+     pagecolor="#ffffff"
+     bordercolor="#666666"
+     borderopacity="1"
+     objecttolerance="10"
+     gridtolerance="10"
+     guidetolerance="10"
+     inkscape:pageopacity="0"
+     inkscape:pageshadow="2"
+     inkscape:window-width="1442"
+     inkscape:window-height="990"
+     id="namedview60"
+     showgrid="false"
+     inkscape:zoom="0.95"
+     inkscape:cx="-54.162804"
+     inkscape:cy="-114.29832"
+     inkscape:window-x="-11"
+     inkscape:window-y="-11"
+     inkscape:window-maximized="1"
+     inkscape:current-layer="svg2"
+     fit-margin-top="0"
+     fit-margin-left="0"
+     fit-margin-right="0"
+     fit-margin-bottom="0" />
+  <style
+     type="text/css"
+     id="style4">
+.state {
+	fill:#d3d3d3;
+	stroke:#fff;
+	stroke-width:0.75;
+	stroke-opacity:1;
+}
+</style>
+  <path
+     d="M 84.90614,94.68728 84.83944,91.52986 83.66033,87.00336 83.01369,80.86027 81.88207,78.43536 82.85203,75.36381 83.66033,72.45392 85.11528,69.86736 84.46863,66.47249 83.82199,62.91596 84.30697,61.13769 86.2469,58.71278 86.40856,55.96455 85.60026,54.67127 86.2469,52.0847 85.79438,47.91399 88.54261,42.25588 91.4525,35.46614 91.61416,33.20289 91.29084,32.23293 90.48253,32.71791 86.27936,39.02267 83.53113,43.06418 81.59121,44.84245 80.78291,47.10569 78.82796,47.91399 77.69634,49.85392 76.24139,49.5306 76.07973,47.75233 77.37302,45.32743 79.4746,40.63927 81.25287,39.02267 82.2437,36.66482 79.68325,34.76348 77.70843,24.39649 74.16096,23.05451 72.2147,20.74618 60.08499,18.02454 57.2091,17.01249 48.99598,14.8452 41.07806,13.68645 37.3129,8.55578 36.5625,9.10979 35.36459,8.94813 34.71794,7.81651 33.38393,8.11306 32.2523,8.27472 30.47404,9.24468 29.50407,8.59804 30.15072,6.65811 32.09064,3.58656 33.22226,2.45494 31.28234,1 29.18075,1.8083 26.27086,3.74822 18.83448,6.98143 15.92459,7.62807 13.01471,7.14309 12.03298,6.26484 9.91628,9.10002 9.68766,11.84349 9.68766,20.30252 8.54454,21.90289 3.28622,25.78946 1,31.73365 1.45724,31.96227 3.97209,34.01988 4.65795,37.2206 2.82897,40.42131 2.82897,44.3079 3.28622,50.93795 6.25831,53.91005 9.68766,53.91005 11.51664,57.11077 14.94597,57.56801 18.83256,63.28358 25.91986,67.39879 27.97746,70.14226 28.89196,77.5725 29.57782,80.88752 31.86405,82.48788 32.09267,83.85962 30.03507,87.28895 30.26369,90.48968 32.77854,94.37626 35.29339,95.51937 38.26548,95.97661 39.60782,97.35673 84.90618,94.68728 z"
+     id="WI"
+     class="state"
+     style="fill:#ffffff;fill-opacity:1;stroke:#000000;stroke-width:2;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none"
+     inkscape:connector-curvature="0" />
+</svg>

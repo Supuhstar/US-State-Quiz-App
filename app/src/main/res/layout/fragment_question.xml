@@ -1,9 +1,11 @@
-<FrameLayout
+<TableLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".QuestionFragment">
+    tools:context=".QuestionFragment"
+    android:columnCount="1"
+    android:rowCount="2">
 
     <!--com.google.android.gms.plus.PlusOneButton
         xmlns:plus="http://schemas.android.com/apk/lib/com.google.android.gms.plus"
@@ -14,10 +16,39 @@
         plus:annotation="inline"
         /-->
 
-    <WebView
+    <TableRow
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
-        android:id="@+id/webView"
-        android:layout_gravity="center"
-        android:background="@color/transparent" />
-</FrameLayout>
+        android:layout_weight="1">
+
+        <WebView
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:id="@+id/webView"
+            android:layout_gravity="top"
+            android:background="@color/transparent"
+            android:layout_column="0"
+            android:layout_weight="1"
+            android:layout_span="1"/>
+    </TableRow>
+
+    <TableRow
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent">
+
+        <EditText
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/guess_spinner"
+            android:layout_gravity="center_horizontal|bottom"
+            android:layout_column="0"
+            android:layout_row="1"
+            android:layout_below="@+id/webView"
+            android:inputType="textAutoComplete"
+            android:imeActionLabel="Guess"
+            android:imeOptions="actionUnspecified"
+            android:layout_span="1"
+            android:layout_weight="1"/>
+    </TableRow>
+
+</TableLayout>

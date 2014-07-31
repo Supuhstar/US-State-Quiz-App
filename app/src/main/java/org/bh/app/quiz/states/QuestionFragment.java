@@ -2,16 +2,15 @@ package org.bh.app.quiz.states;
 
 import android.app.Activity;
 import android.app.Fragment;
-import android.net.Uri;
 import android.os.Bundle;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.webkit.WebView;
+import android.widget.ArrayAdapter;
+import android.widget.Spinner;
 
-
-import com.google.android.gms.plus.PlusOneButton;
 
 import org.bh.app.quiz.states.util.States;
 
@@ -28,6 +27,7 @@ public class QuestionFragment extends Fragment {
 
     private WebView webView;
     private States state;
+    private Spinner guessSpinner;
 
 
 
@@ -57,16 +57,23 @@ public class QuestionFragment extends Fragment {
             R.layout.fragment_main_quiz, container, false);
 
         webView = (WebView)rootView.findViewById(R.id.webView);
+        guessSpinner = (Spinner)getActivity().findViewById(R.id.guess_spinner);
         initState(savedInstanceState);
+        initGuesser();
 
         return rootView;
     }
 
     private void initState(Bundle args) {
+        if (webView == null)
+            return;
+
         if (state == null) {
             System.out.println("Bundle: " + args);
             if (args == null)
                 args = getArguments();
+            if (args == null)
+                return;
             System.out.println("Bundle is now: " + args);
             int stateIndex = args.getInt(States.BUNDLE_KEY);
             System.out.println("Gonna be state #" + stateIndex);
@@ -89,12 +96,22 @@ public class QuestionFragment extends Fragment {
         super.onCreate(savedInstanceState);
         if (webView == null)
             webView = (WebView)(getActivity().findViewById(R.id.webView));
+        if (guessSpinner == null)
+            guessSpinner = (Spinner)getActivity().findViewById(R.id.guess_spinner);
         System.out.println("onCreate: webView == " + webView);
         System.out.println("onCreate: bundle == " + savedInstanceState);
 
-        if (webView != null
-            && savedInstanceState != null)
         initState(savedInstanceState);
+        initGuesser();
+    }
+
+    private void initGuesser() {
+        if (guessSpinner != null)
+            guessSpinner.setAdapter(
+                new ArrayAdapter<States>(
+                    getActivity(),
+                    android.R.layout.simple_list_item_1,
+                    States.values()));
     }
 
     @Override public void onResume(){
