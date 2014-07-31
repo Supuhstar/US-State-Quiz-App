@@ -1,5 +1,9 @@
 package org.bh.app.quiz.states.util;
 
+import android.content.res.Resources;
+
+import org.bh.app.quiz.states.R;
+
 import java.util.Arrays;
 import java.util.regex.Pattern;
 
@@ -11,6 +15,8 @@ import java.util.regex.Pattern;
  * @since 2014-07-29
  */
 public enum States {
+    // THE ORDER OF THESE IS TIED TO arrays.xml!
+    // DO NOT CHANGE THIS WITHOUT CHANGING THAT!
     ALABAMA, ALASKA, ARIZONA, ARKANSAS, CALIFORNIA, COLORADO, CONNECTICUT,
     DELAWARE, FLORIDA, GEORGIA, HAWAII, IDAHO, ILLINOIS, INDIANA, IOWA,
     KANSAS, KENTUCKY, LOUISIANA, MAINE, MARYLAND, MASSACHUSETTS, MICHIGAN,
@@ -35,6 +41,13 @@ public enum States {
     public CharSequence toTitle() {
         if (title != null)
             return title;
+
+        return title =
+            Resources
+                .getSystem()
+                .getStringArray(R.array.state_names)
+                [ordinal()];
+        /*
         String name = name().toLowerCase();
         String[] words = Pattern.compile("_").split(name);
         StringBuilder title = new StringBuilder();
@@ -44,7 +57,7 @@ public enum States {
                 .append(words[i].substring(1))
                 .append(' ');
         title.deleteCharAt(title.length() - 1);
-        return this.title = title;
+        return this.title = title;*/
     }
 
     @Override
@@ -53,59 +66,11 @@ public enum States {
     }
 
     public CharSequence getCapital() {
-        switch (this) {
-            case ALABAMA: return "Montgomery";
-            case ALASKA: return "Juneau";
-            case ARIZONA: return "Phoenix";
-            case ARKANSAS: return "Little Rock";
-            case CALIFORNIA: return "Sacramento";
-            case COLORADO: return "Denver";
-            case CONNECTICUT: return "Hartford";
-            case DELAWARE: return "Dover";
-            case FLORIDA: return "Tallahassee";
-            case GEORGIA: return "Atlanta";
-            case HAWAII: return "Honolulu";
-            case IDAHO: return "Boise";
-            case ILLINOIS: return "Springfield";
-            case INDIANA: return "Indianapolis";
-            case IOWA: return "Des Moines";
-            case KANSAS: return "Topeka";
-            case KENTUCKY: return "Frankfort";
-            case LOUISIANA: return "Baton Rouge";
-            case MAINE: return "Augusta";
-            case MARYLAND: return "Annapolis";
-            case MASSACHUSETTS: return "Boston";
-            case MICHIGAN: return "Lansing";
-            case MINNESOTA: return "Saint Paul";
-            case MISSISSIPPI: return "Jackson";
-            case MISSOURI: return "Jefferson City";
-            case MONTANA: return "Helena";
-            case NEBRASKA: return "Lincoln";
-            case NEVADA: return "Carson City";
-            case NEW_HAMPSHIRE: return "Concord";
-            case NEW_JERSEY: return "Trenton";
-            case NEW_MEXICO: return "Santa Fe";
-            case NEW_YORK: return "Albany";
-            case NORTH_CAROLINA: return "Raleigh";
-            case NORTH_DAKOTA: return "Bismarck";
-            case OHIO: return "Columbus";
-            case OKLAHOMA: return "Oklahoma City";
-            case OREGON: return "Salem";
-            case PENNSYLVANIA: return "Harrisburg";
-            case RHODE_ISLAND: return "Providence";
-            case SOUTH_CAROLINA: return "Columbia";
-            case SOUTH_DAKOTA: return "Pierre";
-            case TENNESSEE: return "Nashville";
-            case TEXAS: return "Austin";
-            case UTAH: return "Salt Lake City";
-            case VERMONT: return "Montpelier";
-            case VIRGINIA: return "Richmond";
-            case WASHINGTON: return "Olympia";
-            case WEST_VIRGINIA: return "Charleston";
-            case WISCONSIN: return "Madison";
-            case WYOMING: return "Cheyenne";
-        }
-        return "promblem";
+        return
+            Resources
+            .getSystem()
+            .getStringArray(R.array.state_capitals)
+            [ordinal()];
     }
 
     private static CharSequence[] titlesCache;

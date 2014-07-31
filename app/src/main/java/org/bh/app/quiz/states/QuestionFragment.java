@@ -87,7 +87,7 @@ public class QuestionFragment extends Fragment {
         System.out.println("Opening image at " + path);
 
         webView.loadUrl(path);
-        webView.setBackgroundColor(0x00000000);
+        webView.setBackgroundColor(getResources().getColor(R.color.transparent));
     }
 
     @Override
