@@ -16,6 +16,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.webkit.WebView;
+import android.widget.Toast;
 
 import org.bh.app.quiz.states.util.States;
 
@@ -71,9 +72,9 @@ public class MainQuizActivity extends Activity implements ActionBar.TabListener 
             // the TabListener interface, as the callback (listener) for when
             // this tab is selected.
             actionBar.addTab(
-                    actionBar.newTab()
-                            .setText(mSectionsPagerAdapter.getPageTitle(i))
-                            .setTabListener(this));
+                actionBar.newTab()
+                    .setText(mSectionsPagerAdapter.getPageTitle(i))
+                    .setTabListener(this));
         }
     }
 
@@ -90,9 +91,16 @@ public class MainQuizActivity extends Activity implements ActionBar.TabListener 
         // Handle action bar item clicks here. The action bar will
         // automatically handle clicks on the Home/Up button, so long
         // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
-        if (id == R.id.action_settings) {
-            return true;
+        switch (item.getItemId())
+        {
+            case R.id.action_settings:
+                Toast
+                    .makeText(
+                        this,
+                        getString(R.string.no_settings_alert),
+                        Toast.LENGTH_SHORT)
+                    .show();
+                return true;
         }
         return super.onOptionsItemSelected(item);
     }

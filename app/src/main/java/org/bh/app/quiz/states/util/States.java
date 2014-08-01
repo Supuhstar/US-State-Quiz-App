@@ -42,12 +42,12 @@ public enum States {
         if (title != null)
             return title;
 
-        return title =
+        /*return title =
             Resources
                 .getSystem()
                 .getStringArray(R.array.state_names)
                 [ordinal()];
-        /*
+        */
         String name = name().toLowerCase();
         String[] words = Pattern.compile("_").split(name);
         StringBuilder title = new StringBuilder();
@@ -57,7 +57,7 @@ public enum States {
                 .append(words[i].substring(1))
                 .append(' ');
         title.deleteCharAt(title.length() - 1);
-        return this.title = title;*/
+        return this.title = title;/**/
     }
 
     @Override

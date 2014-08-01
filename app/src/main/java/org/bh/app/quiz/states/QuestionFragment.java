@@ -1,5 +1,6 @@
 package org.bh.app.quiz.states;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.Fragment;
 import android.os.Bundle;
@@ -9,7 +10,10 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.webkit.WebView;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.Spinner;
+import android.widget.TextView;
+import android.widget.Toast;
 
 
 import org.bh.app.quiz.states.util.States;
@@ -23,11 +27,30 @@ import org.bh.app.quiz.states.util.States;
  * create an instance of this fragment.
  *
  */
-public class QuestionFragment extends Fragment {
+public class QuestionFragment extends Fragment implements View.OnClickListener {
 
     private WebView webView;
     private States state;
     private Spinner guessSpinner;
+    private Button guessButton;
+    private Toast correctionToast;
+    private TextView correctionToastView;
+
+    public QuestionFragment() {
+        correctionToast =
+            Toast.makeText(
+                getActivity(),
+                "welp",
+                Toast.LENGTH_SHORT
+            )
+        ;
+    }
+    @SuppressLint("ValidFragment")
+    public QuestionFragment(States topic) {
+        this();
+        state = topic;
+
+    }
 
 
 
@@ -40,7 +63,7 @@ public class QuestionFragment extends Fragment {
      */
     public static QuestionFragment newInstance(int stateIndex) {
         System.out.println("Creating new instance for state #" + stateIndex);
-        QuestionFragment fragment = new QuestionFragment();
+        QuestionFragment fragment = new QuestionFragment(States.values()[stateIndex]);
         Bundle args = new Bundle();
         args.putInt(States.BUNDLE_KEY, stateIndex);
         fragment.setArguments(args);
@@ -48,41 +71,31 @@ public class QuestionFragment extends Fragment {
     }
 
     @Override
-    public View onCreateView(
-        LayoutInflater inflater,
-        ViewGroup container,
-        Bundle savedInstanceState) {
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         System.out.println("~onCreateView");
-        View rootView = inflater.inflate(
-            R.layout.fragment_main_quiz, container, false);
+        View rootView = inflater.inflate(R.layout.fragment_main_quiz, container, false);
 
         webView = (WebView)rootView.findViewById(R.id.webView);
-        guessSpinner = (Spinner)getActivity().findViewById(R.id.guess_spinner);
-        initState(savedInstanceState);
+        guessSpinner = (Spinner)rootView.findViewById(R.id.guess_spinner);
+        guessButton = (Button)rootView.findViewById(R.id.guess_button);
+        correctionToast.setView(
+            correctionToastView = (TextView)getActivity().findViewById(R.id.correction_toast_view)
+        );
+        initState();
         initGuesser();
-
         return rootView;
     }
 
-    private void initState(Bundle args) {
-        if (webView == null)
-            return;
-
-        if (state == null) {
-            System.out.println("Bundle: " + args);
-            if (args == null)
-                args = getArguments();
-            if (args == null)
-                return;
-            System.out.println("Bundle is now: " + args);
-            int stateIndex = args.getInt(States.BUNDLE_KEY);
-            System.out.println("Gonna be state #" + stateIndex);
-            state = States.values()[stateIndex];
-            System.out.println("Gonna be " + state);
+    private void initState() {
+        Bundle args = getArguments();
+        if (args == null) {
+            throw new IllegalArgumentException("The arguments should be valid!");
         }
-        else
-            System.out.println("State already exists! (yay!)");
-
+        System.out.println("Bundle is now: " + args);
+        int stateIndex = args.getInt(States.BUNDLE_KEY);
+        System.out.println("Gonna be state #" + stateIndex);
+        state = States.values()[stateIndex];
+        System.out.println("Gonna be " + state);
         String path = state.getImageURL();
         System.out.println("Opening image at " + path);
 
@@ -90,20 +103,7 @@ public class QuestionFragment extends Fragment {
         webView.setBackgroundColor(getResources().getColor(R.color.transparent));
     }
 
-    @Override
-    public void onCreate(Bundle savedInstanceState) {
-        System.out.println("~onResume");
-        super.onCreate(savedInstanceState);
-        if (webView == null)
-            webView = (WebView)(getActivity().findViewById(R.id.webView));
-        if (guessSpinner == null)
-            guessSpinner = (Spinner)getActivity().findViewById(R.id.guess_spinner);
-        System.out.println("onCreate: webView == " + webView);
-        System.out.println("onCreate: bundle == " + savedInstanceState);
-
-        initState(savedInstanceState);
-        initGuesser();
-    }
+//removed the onCreate() method
 
     private void initGuesser() {
         if (guessSpinner != null)
@@ -112,8 +112,20 @@ public class QuestionFragment extends Fragment {
                     getActivity(),
                     android.R.layout.simple_list_item_1,
                     States.values()));
+        if (guessButton != null)
+            guessButton.setOnClickListener(this);
     }
 
+    @Override
+    public void onClick(View view) {
+        switch (view.getId())
+        {
+            case R.id.guess_button:
+                correctionToast.show();
+        }
+    }
+
+    /*
     @Override public void onResume(){
         System.out.println("~onResume");
         super.onResume();}
@@ -144,4 +156,5 @@ public class QuestionFragment extends Fragment {
     @Override public void onInflate(AttributeSet attrs, Bundle savedInstanceState){
         System.out.println("~onInflate (old)");
         super.onInflate(attrs, savedInstanceState);}
+    */
 }

@@ -4,5 +4,6 @@
     <string name="app_name">U.S. State Quiz App</string>
     <string name="action_settings">[no settings]</string>
     <string name="guess_button_text">Guess</string>
+    <string name="no_settings_alert">This app has no settings</string>
 
 </resources>
