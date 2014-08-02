@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<TextView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:id="@+id/correction_toast_view"
+    android:text="@string/guess_correct"
+    android:textSize="@dimen/text_size_huge"
+    android:textColor="@android:color/primary_text_dark"
+    android:textStyle="bold"
+    android:typeface="sans"
+    android:shadowColor="@android:color/black"
+    android:shadowDx="1"
+    android:shadowDy="1"
+    android:shadowRadius="5"
+    android:background="@android:color/holo_green_dark"
+    android:paddingTop="@dimen/toast_top_huge"
+    android:paddingLeft="@dimen/toast_left_huge"
+    android:paddingBottom="@dimen/toast_bottom_huge"
+    android:paddingRight="@dimen/toast_right_huge"
+    android:textAlignment="center"
+    android:gravity="center_vertical|center_horizontal">
+
+</TextView>

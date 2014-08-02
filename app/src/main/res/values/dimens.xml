@@ -2,4 +2,10 @@
     <!-- Default screen margins, per the Android Design guidelines. -->
     <dimen name="activity_horizontal_margin">16dp</dimen>
     <dimen name="activity_vertical_margin">16dp</dimen>
+    <dimen name="text_size_huge">40sp</dimen>
+    <dimen name="toast_top_huge">20dp</dimen>
+    <dimen name="toast_right_huge">@dimen/toast_left_huge</dimen>
+    <dimen name="toast_bottom_huge">@dimen/toast_top_huge</dimen>
+    <dimen name="toast_left_huge">@dimen/text_size_huge</dimen>
+
 </resources>

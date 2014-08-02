@@ -1,24 +1,22 @@
 package org.bh.app.quiz.states;
 
-import java.util.Locale;
-
-import android.app.Activity;
 import android.app.ActionBar;
+import android.app.Activity;
 import android.app.Fragment;
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
-import android.support.v13.app.FragmentPagerAdapter;
 import android.os.Bundle;
+import android.support.v13.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
-import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
-import android.view.ViewGroup;
-import android.webkit.WebView;
 import android.widget.Toast;
 
+import org.bh.app.quiz.states.util.MoreArrays;
 import org.bh.app.quiz.states.util.States;
+
+import static org.bh.app.quiz.states.DEBUG_FLAGS.OBFUSCATE_QUESTION_NAMES;
+import static org.bh.app.quiz.states.DEBUG_FLAGS.SHUFFLE_STATES;
 
 
 public class MainQuizActivity extends Activity implements ActionBar.TabListener {
@@ -31,7 +29,7 @@ public class MainQuizActivity extends Activity implements ActionBar.TabListener 
      * may be best to switch to a
      * {@link android.support.v13.app.FragmentStatePagerAdapter}.
      */
-    SectionsPagerAdapter mSectionsPagerAdapter;
+    StatePagerAdapter mStatePagerAdapter;
 
     /**
      * The {@link ViewPager} that will host the section contents.
@@ -45,15 +43,16 @@ public class MainQuizActivity extends Activity implements ActionBar.TabListener 
 
         // Set up the action bar.
         final ActionBar actionBar = getActionBar();
+        assert actionBar != null;
         actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_TABS);
 
         // Create the adapter that will return a fragment for each of the three
         // primary sections of the activity.
-        mSectionsPagerAdapter = new SectionsPagerAdapter(getFragmentManager());
+        mStatePagerAdapter = new StatePagerAdapter(getFragmentManager());
 
         // Set up the ViewPager with the sections adapter.
         mViewPager = (ViewPager) findViewById(R.id.pager);
-        mViewPager.setAdapter(mSectionsPagerAdapter);
+        mViewPager.setAdapter(mStatePagerAdapter);
 
         // When swiping between different sections, select the corresponding
         // tab. We can also use ActionBar.Tab#select() to do this if we have
@@ -66,14 +65,14 @@ public class MainQuizActivity extends Activity implements ActionBar.TabListener 
         });
 
         // For each of the sections in the app, add a tab to the action bar.
-        for (int i = 0; i < mSectionsPagerAdapter.getCount(); i++) {
+        for (int i = 0; i < mStatePagerAdapter.getCount(); i++) {
             // Create a tab with text corresponding to the page title defined by
             // the adapter. Also specify this Activity object, which implements
             // the TabListener interface, as the callback (listener) for when
             // this tab is selected.
             actionBar.addTab(
                 actionBar.newTab()
-                    .setText(mSectionsPagerAdapter.getPageTitle(i))
+                    .setText(mStatePagerAdapter.getPageTitle(i))
                     .setTabListener(this));
         }
     }
@@ -124,10 +123,19 @@ public class MainQuizActivity extends Activity implements ActionBar.TabListener 
      * A {@link FragmentPagerAdapter} that returns a fragment corresponding to
      * one of the sections/tabs/pages.
      */
-    public class SectionsPagerAdapter extends FragmentPagerAdapter {
+    public class StatePagerAdapter extends FragmentPagerAdapter {
 
-        public SectionsPagerAdapter(FragmentManager fm) {
+        private Byte[] shuffled;
+
+        public StatePagerAdapter(FragmentManager fm) {
             super(fm);
+            States[] vals = States.values();
+            shuffled = new Byte[vals.length];
+            for(byte i = 0, l = (byte)Math.min(vals.length, Byte.MAX_VALUE); i < l; i++) {
+                shuffled[i] = i;
+            }
+
+            if (SHUFFLE_STATES) shuffled = MoreArrays.shuffle(shuffled);
         }
 
         QuestionFragment[] questionFragments = new QuestionFragment[States.values().length];
@@ -135,7 +143,7 @@ public class MainQuizActivity extends Activity implements ActionBar.TabListener 
         @Override
         public Fragment getItem(int position) {
             // getItem is called to instantiate the fragment for the given page.
-            // Return a PlaceholderFragment (defined as a static inner class below).
+            position = shuffled[position];
             return
                 questionFragments[position] == null
                     ? questionFragments[position] = QuestionFragment.newInstance(position)
@@ -150,7 +158,9 @@ public class MainQuizActivity extends Activity implements ActionBar.TabListener 
 
         @Override
         public CharSequence getPageTitle(int position) {
-            Locale l = Locale.getDefault();
+            if (OBFUSCATE_QUESTION_NAMES)
+                return "State  " + (position + 1);
+
             States[] states = States.values();
             if (position >= states.length || position < 0)
                 return "air or";

@@ -1,20 +1,19 @@
 package org.bh.app.quiz.states;
 
 import android.annotation.SuppressLint;
-import android.app.Activity;
 import android.app.Fragment;
 import android.os.Bundle;
-import android.util.AttributeSet;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.webkit.WebView;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
-
 
 import org.bh.app.quiz.states.util.States;
 
@@ -27,7 +26,9 @@ import org.bh.app.quiz.states.util.States;
  * create an instance of this fragment.
  *
  */
-public class QuestionFragment extends Fragment implements View.OnClickListener {
+public class QuestionFragment
+    extends Fragment
+    implements View.OnClickListener, AdapterView.OnItemSelectedListener {
 
     private WebView webView;
     private States state;
@@ -36,15 +37,9 @@ public class QuestionFragment extends Fragment implements View.OnClickListener {
     private Toast correctionToast;
     private TextView correctionToastView;
 
-    public QuestionFragment() {
-        correctionToast =
-            Toast.makeText(
-                getActivity(),
-                "welp",
-                Toast.LENGTH_SHORT
-            )
-        ;
-    }
+    private boolean mIsCorrect;
+
+    public QuestionFragment() {}
     @SuppressLint("ValidFragment")
     public QuestionFragment(States topic) {
         this();
@@ -74,16 +69,17 @@ public class QuestionFragment extends Fragment implements View.OnClickListener {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         System.out.println("~onCreateView");
         View rootView = inflater.inflate(R.layout.fragment_main_quiz, container, false);
+        initViews(rootView);
+        initState();
+        initGuesser();
+        initToast();
+        return rootView;
+    }
 
+    private void initViews(View rootView) {
         webView = (WebView)rootView.findViewById(R.id.webView);
         guessSpinner = (Spinner)rootView.findViewById(R.id.guess_spinner);
         guessButton = (Button)rootView.findViewById(R.id.guess_button);
-        correctionToast.setView(
-            correctionToastView = (TextView)getActivity().findViewById(R.id.correction_toast_view)
-        );
-        initState();
-        initGuesser();
-        return rootView;
     }
 
     private void initState() {
@@ -112,17 +108,57 @@ public class QuestionFragment extends Fragment implements View.OnClickListener {
                     getActivity(),
                     android.R.layout.simple_list_item_1,
                     States.values()));
+        guessSpinner.setOnItemSelectedListener(this);
+
         if (guessButton != null)
             guessButton.setOnClickListener(this);
     }
 
+    @SuppressLint("ShowToast") // this only sets it up to be created later, but does not show it
+    private void initToast() {
+        if (correctionToastView == null)
+        {
+            LayoutInflater layoutInflater = getActivity().getLayoutInflater();
+            correctionToastView = (TextView)layoutInflater.inflate(R.layout.correction_toast_layout, null);
+        }
+
+        correctionToast = Toast.makeText(getActivity(), "welp", Toast.LENGTH_SHORT);
+        correctionToast.setView(correctionToastView);
+        correctionToast.setGravity(Gravity.CENTER_VERTICAL | Gravity.FILL_HORIZONTAL, 0, 0);
+    }
+
     @Override
     public void onClick(View view) {
+        if (mIsCorrect) {
+            correctionToastView.setText(R.string.guess_correct);
+            correctionToastView.setBackgroundColor(
+                getResources().getColor(R.color.correct_background));
+        }
+        else {
+            correctionToastView.setText(R.string.guess_incorrect);
+            correctionToastView.setBackgroundColor(
+                getResources().getColor(R.color.incorrect_background));
+        }
+
         switch (view.getId())
         {
             case R.id.guess_button:
                 correctionToast.show();
         }
+    }
+
+    @Override
+    public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+        switch (parent.getId())
+        {
+            case R.id.guess_spinner:
+                mIsCorrect = position == state.ordinal();
+        }
+    }
+
+    @Override
+    public void onNothingSelected(AdapterView<?> parent) {
+
     }
 
     /*
