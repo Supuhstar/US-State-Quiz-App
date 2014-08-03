@@ -16,6 +16,9 @@ public class ScoreManager {
     public ScoreManager(SharedPreferences initPreferences)
     {
         preferences = initPreferences;
+        States[] states = States.values();
+        for(States state : states)
+            setScore(state, 0);
     }
 
     public int calculateOverallScore()

@@ -92,6 +92,7 @@ public class MainQuizActivity extends Activity implements ActionBar.TabListener 
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.quiz_menu, menu);
         mScoreMenuItem = (MenuItem)menu.findItem(R.id.score_menu_item);
+        updateScore();
         return true;
     }
 
@@ -200,7 +201,10 @@ public class MainQuizActivity extends Activity implements ActionBar.TabListener 
     }
 
     private void updateScore() {
-        int score = mScoreManager.calculateOverallScore();
+        int score =
+            mScoreManager == null
+                ? 0
+                : mScoreManager.calculateOverallScore();
         mScoreMenuItem.setTitle("Score: " + score);
         mScoreMenuItem.setTitleCondensed(score + " pts");
     }
