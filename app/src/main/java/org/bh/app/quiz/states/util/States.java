@@ -1,10 +1,5 @@
 package org.bh.app.quiz.states.util;
 
-import android.content.res.Resources;
-
-import org.bh.app.quiz.states.R;
-
-import java.util.Arrays;
 import java.util.regex.Pattern;
 
 /**
@@ -17,20 +12,68 @@ import java.util.regex.Pattern;
 public enum States {
     // THE ORDER OF THESE IS TIED TO arrays.xml!
     // DO NOT CHANGE THIS WITHOUT CHANGING THAT!
-    ALABAMA, ALASKA, ARIZONA, ARKANSAS, CALIFORNIA, COLORADO, CONNECTICUT,
-    DELAWARE, FLORIDA, GEORGIA, HAWAII, IDAHO, ILLINOIS, INDIANA, IOWA,
-    KANSAS, KENTUCKY, LOUISIANA, MAINE, MARYLAND, MASSACHUSETTS, MICHIGAN,
-    MINNESOTA, MISSISSIPPI, MISSOURI, MONTANA, NEBRASKA, NEVADA,
-    NEW_HAMPSHIRE, NEW_JERSEY, NEW_MEXICO, NEW_YORK, NORTH_CAROLINA,
-    NORTH_DAKOTA, OHIO, OKLAHOMA, OREGON, PENNSYLVANIA, RHODE_ISLAND,
-    SOUTH_CAROLINA, SOUTH_DAKOTA, TENNESSEE, TEXAS, UTAH, VERMONT, VIRGINIA,
-    WASHINGTON, WEST_VIRGINIA, WISCONSIN, WYOMING
+    ALABAMA        ("Montgomery"),
+    ALASKA         ("Juneau"),
+    ARIZONA        ("Phoenix"),
+    ARKANSAS       ("Little Rock"),
+    CALIFORNIA     ("Sacramento"),
+    COLORADO       ("Denver"),
+    CONNECTICUT    ("Hartford"),
+    DELAWARE       ("Dover"),
+    FLORIDA        ("Tallahassee"),
+    GEORGIA        ("Atlanta"),
+    HAWAII         ("Honolulu"),
+    IDAHO          ("Boise"),
+    ILLINOIS       ("Springfield"),
+    INDIANA        ("Indianapolis"),
+    IOWA           ("Des Moines"),
+    KANSAS         ("Topeka"),
+    KENTUCKY       ("Frankfort"),
+    LOUISIANA      ("Baton Rouge"),
+    MAINE          ("Augusta"),
+    MARYLAND       ("Annapolis"),
+    MASSACHUSETTS  ("Boston"),
+    MICHIGAN       ("Lansing"),
+    MINNESOTA      ("Saint Paul"),
+    MISSISSIPPI    ("Jackson"),
+    MISSOURI       ("Jefferson City"),
+    MONTANA        ("Helena"),
+    NEBRASKA       ("Lincoln"),
+    NEVADA         ("Carson City"),
+    NEW_HAMPSHIRE  ("Concord"),
+    NEW_JERSEY     ("Trenton"),
+    NEW_MEXICO     ("Santa Fe"),
+    NEW_YORK       ("Albany"),
+    NORTH_CAROLINA ("Raleigh"),
+    NORTH_DAKOTA   ("Bismarck"),
+    OHIO           ("Columbus"),
+    OKLAHOMA       ("Oklahoma City"),
+    OREGON         ("Salem"),
+    PENNSYLVANIA   ("Harrisburg"),
+    RHODE_ISLAND   ("Providence"),
+    SOUTH_CAROLINA ("Columbia"),
+    SOUTH_DAKOTA   ("Pierre"),
+    TENNESSEE      ("Nashville"),
+    TEXAS          ("Austin"),
+    UTAH           ("Salt Lake City"),
+    VERMONT        ("Montpelier"),
+    VIRGINIA       ("Richmond"),
+    WASHINGTON     ("Olympia"),
+    WEST_VIRGINIA  ("Charleston"),
+    WISCONSIN      ("Madison"),
+    WYOMING        ("Cheyenne")
     ;
 
     public static final String IMAGE_DIR =
         "http://bhstudios.org/http/bhstudios/v2/_shared/_img/states/";
     public static final String IMAGE_EXT = ".svg";
     public static final String BUNDLE_KEY = "STATE";
+    private String capital;
+
+    private States(String capital)
+    {
+        this.capital = capital;
+    }
 
     public String getImageURL()
     {
@@ -66,11 +109,7 @@ public enum States {
     }
 
     public CharSequence getCapital() {
-        return
-            Resources
-            .getSystem()
-            .getStringArray(R.array.state_capitals)
-            [ordinal()];
+        return capital;
     }
 
     private static CharSequence[] titlesCache;

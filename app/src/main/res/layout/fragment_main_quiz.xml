@@ -39,7 +39,7 @@
             android:layout_column="1"
             android:layout_weight="1"
             android:layout_span="1"
-            android:id="@+id/guess_spinner"
+            android:id="@+id/state_spinner"
             android:inputType="textAutoComplete|textAutoCorrect"
             android:imeActionLabel="Guess"
             android:imeOptions="actionUnspecified"
@@ -50,7 +50,32 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/guess_button_text"
-            android:id="@+id/guess_button"
+            android:id="@+id/guess_state_button"
+            android:layout_column="2"
+            android:layout_weight="0"
+            android:layout_span="1"/>
+    </TableRow>
+
+    <TableRow
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:id="@+id/capital_guesser"
+        android:visibility="invisible">
+
+        <Spinner
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/capital_spinner"
+            android:layout_column="1"
+            android:layout_span="2"
+            android:layout_weight="1"
+            android:entries="@array/state_capitals"/>
+
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/guess_button_text"
+            android:id="@+id/guess_capital_button"
             android:layout_column="2"
             android:layout_weight="0"
             android:layout_span="1"/>

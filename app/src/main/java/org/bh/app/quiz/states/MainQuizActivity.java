@@ -6,13 +6,16 @@ import android.app.Fragment;
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.v13.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Toast;
 
+import org.bh.app.quiz.states.evt.OnQuestionAnswerListener;
 import org.bh.app.quiz.states.util.MoreArrays;
+import org.bh.app.quiz.states.util.ScoreManager;
 import org.bh.app.quiz.states.util.States;
 
 import static org.bh.app.quiz.states.DEBUG_FLAGS.OBFUSCATE_QUESTION_NAMES;
@@ -31,16 +34,22 @@ public class MainQuizActivity extends Activity implements ActionBar.TabListener 
      */
     StatePagerAdapter mStatePagerAdapter;
 
-    /**
-     * The {@link ViewPager} that will host the section contents.
-     */
-    ViewPager mViewPager;
+    /** The {@link ViewPager} that will host the section contents. */
+    private ViewPager mViewPager;
+    private MenuItem mScoreMenuItem;
+
+    private ScoreManager mScoreManager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main_quiz);
 
+        mScoreManager = new ScoreManager(PreferenceManager.getDefaultSharedPreferences(this));
+        initTabs();
+    }
+
+    private void initTabs() {
         // Set up the action bar.
         final ActionBar actionBar = getActionBar();
         assert actionBar != null;
@@ -50,6 +59,7 @@ public class MainQuizActivity extends Activity implements ActionBar.TabListener 
         // primary sections of the activity.
         mStatePagerAdapter = new StatePagerAdapter(getFragmentManager());
 
+
         // Set up the ViewPager with the sections adapter.
         mViewPager = (ViewPager) findViewById(R.id.pager);
         mViewPager.setAdapter(mStatePagerAdapter);
@@ -58,8 +68,7 @@ public class MainQuizActivity extends Activity implements ActionBar.TabListener 
         // tab. We can also use ActionBar.Tab#select() to do this if we have
         // a reference to the Tab.
         mViewPager.setOnPageChangeListener(new ViewPager.SimpleOnPageChangeListener() {
-            @Override
-            public void onPageSelected(int position) {
+            @Override public void onPageSelected(int position) {
                 actionBar.setSelectedNavigationItem(position);
             }
         });
@@ -81,7 +90,8 @@ public class MainQuizActivity extends Activity implements ActionBar.TabListener 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.main_quiz, menu);
+        getMenuInflater().inflate(R.menu.quiz_menu, menu);
+        mScoreMenuItem = (MenuItem)menu.findItem(R.id.score_menu_item);
         return true;
     }
 
@@ -90,14 +100,12 @@ public class MainQuizActivity extends Activity implements ActionBar.TabListener 
         // Handle action bar item clicks here. The action bar will
         // automatically handle clicks on the Home/Up button, so long
         // as you specify a parent activity in AndroidManifest.xml.
+
         switch (item.getItemId())
         {
-            case R.id.action_settings:
+            case R.id.score_menu_item:
                 Toast
-                    .makeText(
-                        this,
-                        getString(R.string.no_settings_alert),
-                        Toast.LENGTH_SHORT)
+                    .makeText(this, getString(R.string.refresh_clicked_toast), Toast.LENGTH_SHORT)
                     .show();
                 return true;
         }
@@ -146,7 +154,7 @@ public class MainQuizActivity extends Activity implements ActionBar.TabListener 
             position = shuffled[position];
             return
                 questionFragments[position] == null
-                    ? questionFragments[position] = QuestionFragment.newInstance(position)
+                    ? questionFragments[position] = makeNewQuestionFragment(position)
                     : questionFragments[position];
         }
 
@@ -166,5 +174,34 @@ public class MainQuizActivity extends Activity implements ActionBar.TabListener 
                 return "air or";
             return states[position].toTitle();
         }
+    }
+
+    private QuestionFragment makeNewQuestionFragment(int position) {
+        final QuestionFragment ret = QuestionFragment.newInstance(position);
+        ret.setOnQuestionAnswerListener(new OnQuestionAnswerListener() {
+            @Override
+            public void onQuestionAnswer(boolean correctAnswer, boolean secondAnswer) {
+                mScoreManager.setScore(
+                    ret.getState(),
+                    correctAnswer
+                        ? (secondAnswer
+                            ? 11
+                            : 0)
+                        : 0
+                );
+                if (!correctAnswer || secondAnswer)
+                    mViewPager.setCurrentItem(mViewPager.getCurrentItem() + 1);
+                else
+                    ret.showSecondQuestion();
+                updateScore();
+            }
+        });
+        return ret;
+    }
+
+    private void updateScore() {
+        int score = mScoreManager.calculateOverallScore();
+        mScoreMenuItem.setTitle("Score: " + score);
+        mScoreMenuItem.setTitleCondensed(score + " pts");
     }
 }

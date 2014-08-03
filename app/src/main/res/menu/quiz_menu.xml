@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context=".MainQuizActivity" >
+    <item
+        android:id="@+id/score_menu_item"
+        android:title="@string/loading_score_long"
+        android:titleCondensed="@string/loading_score_short"
+        android:showAsAction="always"
+        android:alphabeticShortcut="r"
+        android:numericShortcut="5"
+        android:checkable="false"
+        android:visible="true"
+        android:enabled="true"
+        android:menuCategory="system"
+        android:orderInCategory="0"
+        />
+</menu>

@@ -2,10 +2,11 @@
 <resources>
 
     <string name="app_name">U.S. State Quiz App</string>
-    <string name="action_settings">[no settings]</string>
     <string name="guess_button_text">Guess</string>
-    <string name="no_settings_alert">This app has no settings</string>
+    <string name="refresh_clicked_toast">This is your score</string>
     <string name="guess_correct">Correct!</string>
     <string name="guess_incorrect">Incorrect!</string>
+    <string name="loading_score_long">Loading…</string>
+    <string name="loading_score_short">…</string>
 
 </resources>

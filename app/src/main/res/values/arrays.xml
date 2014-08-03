@@ -62,55 +62,55 @@
     DO NOT CHANGE THIS WITHOUT CHANGING THAT!
     -->
     <array name="state_capitals">
-        <item>Montgomery</item>
-        <item>Juneau</item>
-        <item>Phoenix</item>
-        <item>Little Rock</item>
-        <item>Sacramento</item>
-        <item>Denver</item>
-        <item>Hartford</item>
-        <item>Dover</item>
-        <item>Tallahassee</item>
-        <item>Atlanta</item>
-        <item>Honolulu</item>
-        <item>Boise</item>
-        <item>Springfield</item>
-        <item>Indianapolis</item>
-        <item>Des Moines</item>
-        <item>Topeka</item>
-        <item>Frankfort</item>
-        <item>Baton Rouge</item>
-        <item>Augusta</item>
+        <item>Albany</item>
         <item>Annapolis</item>
+        <item>Atlanta</item>
+        <item>Augusta</item>
+        <item>Austin</item>
+        <item>Baton Rouge</item>
+        <item>Bismarck</item>
+        <item>Boise</item>
         <item>Boston</item>
-        <item>Lansing</item>
-        <item>Saint Paul</item>
+        <item>Carson City</item>
+        <item>Charleston</item>
+        <item>Cheyenne</item>
+        <item>Columbia</item>
+        <item>Columbus</item>
+        <item>Concord</item>
+        <item>Denver</item>
+        <item>Des Moines</item>
+        <item>Dover</item>
+        <item>Frankfort</item>
+        <item>Harrisburg</item>
+        <item>Hartford</item>
+        <item>Helena</item>
+        <item>Honolulu</item>
+        <item>Indianapolis</item>
         <item>Jackson</item>
         <item>Jefferson City</item>
-        <item>Helena</item>
+        <item>Juneau</item>
+        <item>Lansing</item>
         <item>Lincoln</item>
-        <item>Carson City</item>
-        <item>Concord</item>
-        <item>Trenton</item>
-        <item>Santa Fe</item>
-        <item>Albany</item>
-        <item>Raleigh</item>
-        <item>Bismarck</item>
-        <item>Columbus</item>
-        <item>Oklahoma City</item>
-        <item>Salem</item>
-        <item>Harrisburg</item>
-        <item>Providence</item>
-        <item>Columbia</item>
-        <item>Pierre</item>
-        <item>Nashville</item>
-        <item>Austin</item>
-        <item>Salt Lake City</item>
-        <item>Montpelier</item>
-        <item>Richmond</item>
-        <item>Olympia</item>
-        <item>Charleston</item>
+        <item>Little Rock</item>
         <item>Madison</item>
-        <item>Cheyenne</item>
+        <item>Montgomery</item>
+        <item>Montpelier</item>
+        <item>Nashville</item>
+        <item>Oklahoma City</item>
+        <item>Olympia</item>
+        <item>Phoenix</item>
+        <item>Pierre</item>
+        <item>Providence</item>
+        <item>Raleigh</item>
+        <item>Richmond</item>
+        <item>Sacramento</item>
+        <item>Saint Paul</item>
+        <item>Salem</item>
+        <item>Salt Lake City</item>
+        <item>Santa Fe</item>
+        <item>Springfield</item>
+        <item>Tallahassee</item>
+        <item>Topeka</item>
+        <item>Trenton</item>
     </array>
 </resources>

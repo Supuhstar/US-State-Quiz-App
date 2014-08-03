@@ -12,9 +12,11 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.Spinner;
+import android.widget.TableRow;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import org.bh.app.quiz.states.evt.OnQuestionAnswerListener;
 import org.bh.app.quiz.states.util.States;
 
 /**
@@ -30,21 +32,23 @@ public class QuestionFragment
     extends Fragment
     implements View.OnClickListener, AdapterView.OnItemSelectedListener {
 
-    private WebView webView;
-    private States state;
-    private Spinner guessSpinner;
-    private Button guessButton;
-    private Toast correctionToast;
-    private TextView correctionToastView;
+    private WebView mStateImageView;
+    private Spinner mStateSpinner, mCapitalSpinner;
+    private Button mGuessStateButton, mGuessCapitalButton;
+    private Toast mCorrectionToast;
+    private TextView mCorrectionToastView;
+    private TableRow mSecondQuestion;
 
-    private boolean mIsCorrect;
+    private boolean mIsStateCorrect, mIsCapitalCorrect;
+    private States mState;
+    private byte mScore = 1;
+    private OnQuestionAnswerListener mOnQuestionAnswerListener;
 
     public QuestionFragment() {}
     @SuppressLint("ValidFragment")
     public QuestionFragment(States topic) {
         this();
-        state = topic;
-
+        mState = topic;
     }
 
 
@@ -53,11 +57,11 @@ public class QuestionFragment
      * Use this factory method to create a new instance of
      * this fragment using the provided parameters.
      *
-     * @param stateIndex the state to display
+     * @param stateIndex the mState to display
      * @return A new instance of fragment QuestionFragment.
      */
     public static QuestionFragment newInstance(int stateIndex) {
-        System.out.println("Creating new instance for state #" + stateIndex);
+        System.out.println("Creating new instance for mState #" + stateIndex);
         QuestionFragment fragment = new QuestionFragment(States.values()[stateIndex]);
         Bundle args = new Bundle();
         args.putInt(States.BUNDLE_KEY, stateIndex);
@@ -71,15 +75,18 @@ public class QuestionFragment
         View rootView = inflater.inflate(R.layout.fragment_main_quiz, container, false);
         initViews(rootView);
         initState();
-        initGuesser();
+        initGuessers();
         initToast();
         return rootView;
     }
 
     private void initViews(View rootView) {
-        webView = (WebView)rootView.findViewById(R.id.webView);
-        guessSpinner = (Spinner)rootView.findViewById(R.id.guess_spinner);
-        guessButton = (Button)rootView.findViewById(R.id.guess_button);
+        mStateImageView     = (WebView)rootView.findViewById(R.id.webView);
+        mStateSpinner = (Spinner)rootView.findViewById(R.id.state_spinner);
+        mCapitalSpinner = (Spinner)rootView.findViewById(R.id.capital_spinner);
+        mGuessStateButton   = (Button)rootView.findViewById(R.id.guess_state_button);
+        mGuessCapitalButton = (Button)rootView.findViewById(R.id.guess_capital_button);
+        mSecondQuestion     = (TableRow)rootView.findViewById(R.id.capital_guesser);
     }
 
     private void initState() {
@@ -89,61 +96,86 @@ public class QuestionFragment
         }
         System.out.println("Bundle is now: " + args);
         int stateIndex = args.getInt(States.BUNDLE_KEY);
-        System.out.println("Gonna be state #" + stateIndex);
-        state = States.values()[stateIndex];
-        System.out.println("Gonna be " + state);
-        String path = state.getImageURL();
+        System.out.println("Gonna be mState #" + stateIndex);
+        mState = States.values()[stateIndex];
+        System.out.println("Gonna be " + mState);
+        String path = mState.getImageURL();
         System.out.println("Opening image at " + path);
 
-        webView.loadUrl(path);
-        webView.setBackgroundColor(getResources().getColor(R.color.transparent));
+        mStateImageView.loadUrl(path);
+        mStateImageView.setBackgroundColor(getResources().getColor(R.color.transparent));
     }
 
 //removed the onCreate() method
 
-    private void initGuesser() {
-        if (guessSpinner != null)
-            guessSpinner.setAdapter(
+    private void initGuessers() {
+        if (mStateSpinner != null) {
+            mStateSpinner.setAdapter(
                 new ArrayAdapter<States>(
                     getActivity(),
                     android.R.layout.simple_list_item_1,
-                    States.values()));
-        guessSpinner.setOnItemSelectedListener(this);
+                    States.values())
+            );
+            mStateSpinner.setOnItemSelectedListener(this);
+        }
+        if (mCapitalSpinner != null) {
+            mCapitalSpinner.setOnItemSelectedListener(this);
+        }
 
-        if (guessButton != null)
-            guessButton.setOnClickListener(this);
+        if (mGuessStateButton != null)
+            mGuessStateButton.setOnClickListener(this);
+        if (mGuessCapitalButton != null)
+            mGuessCapitalButton.setOnClickListener(this);
     }
 
     @SuppressLint("ShowToast") // this only sets it up to be created later, but does not show it
     private void initToast() {
-        if (correctionToastView == null)
+        if (mCorrectionToastView == null)
         {
             LayoutInflater layoutInflater = getActivity().getLayoutInflater();
-            correctionToastView = (TextView)layoutInflater.inflate(R.layout.correction_toast_layout, null);
+            mCorrectionToastView = (TextView)layoutInflater.inflate(R.layout.correction_toast_layout, null);
         }
 
-        correctionToast = Toast.makeText(getActivity(), "welp", Toast.LENGTH_SHORT);
-        correctionToast.setView(correctionToastView);
-        correctionToast.setGravity(Gravity.CENTER_VERTICAL | Gravity.FILL_HORIZONTAL, 0, 0);
+        mCorrectionToast = Toast.makeText(getActivity(), "welp", Toast.LENGTH_SHORT);
+        mCorrectionToast.setView(mCorrectionToastView);
+        mCorrectionToast.setGravity(Gravity.CENTER_VERTICAL | Gravity.FILL_HORIZONTAL, 0, 0);
     }
 
     @Override
     public void onClick(View view) {
-        if (mIsCorrect) {
-            correctionToastView.setText(R.string.guess_correct);
-            correctionToastView.setBackgroundColor(
-                getResources().getColor(R.color.correct_background));
-        }
-        else {
-            correctionToastView.setText(R.string.guess_incorrect);
-            correctionToastView.setBackgroundColor(
-                getResources().getColor(R.color.incorrect_background));
-        }
 
         switch (view.getId())
         {
-            case R.id.guess_button:
-                correctionToast.show();
+            case R.id.guess_state_button:
+                if (mIsStateCorrect) {
+                    mCorrectionToastView.setText(R.string.guess_correct);
+                    mCorrectionToastView.setBackgroundColor(
+                        getResources().getColor(R.color.correct_background));
+                }
+                else {
+                    mCorrectionToastView.setText(R.string.guess_incorrect);
+                    mCorrectionToastView.setBackgroundColor(
+                        getResources().getColor(R.color.incorrect_background));
+                }
+                mCorrectionToast.show();
+                if (mOnQuestionAnswerListener != null)
+                    mOnQuestionAnswerListener.onQuestionAnswer(mIsStateCorrect, false);
+                break;
+            case R.id.guess_capital_button:
+                if (mIsCapitalCorrect) {
+                    mCorrectionToastView.setText(R.string.guess_correct);
+                    mCorrectionToastView.setBackgroundColor(
+                        getResources().getColor(R.color.correct_background));
+                }
+                else {
+                    mCorrectionToastView.setText(mState.getCapital());
+                    mCorrectionToastView.setBackgroundColor(
+                        getResources().getColor(R.color.incorrect_background));
+                }
+                mCorrectionToast.show();
+                if (mOnQuestionAnswerListener != null)
+                    mOnQuestionAnswerListener.onQuestionAnswer(mIsCapitalCorrect, true);
+                break;
         }
     }
 
@@ -151,14 +183,39 @@ public class QuestionFragment
     public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
         switch (parent.getId())
         {
-            case R.id.guess_spinner:
-                mIsCorrect = position == state.ordinal();
+            case R.id.state_spinner:
+                mIsStateCorrect = position == mState.ordinal();
+                break;
+            case R.id.capital_spinner:
+                System.out.println("Resource capital id (" + id + "): " +
+                    getResources()
+                        .getStringArray(R.array.state_capitals)
+                        [position]);
+                System.out.println("This capital (" + mState.ordinal() + "): " + mState.getCapital());
+                mIsCapitalCorrect =
+                    getResources()
+                        .getStringArray(R.array.state_capitals)
+                        [position]
+                    ==
+                    mState.getCapital()
+                ;
+                break;
         }
     }
 
     @Override
-    public void onNothingSelected(AdapterView<?> parent) {
+    public void onNothingSelected(AdapterView<?> parent){}
 
+    public void setOnQuestionAnswerListener(OnQuestionAnswerListener newListener) {
+        mOnQuestionAnswerListener = newListener;
+    }
+
+    public States getState() {
+        return mState;
+    }
+
+    public void showSecondQuestion() {
+        mSecondQuestion.setVisibility(View.VISIBLE);
     }
 
     /*
