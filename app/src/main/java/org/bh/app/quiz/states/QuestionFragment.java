@@ -187,17 +187,18 @@ public class QuestionFragment
                 mIsStateCorrect = position == mState.ordinal();
                 break;
             case R.id.capital_spinner:
-                System.out.println("Resource capital id (" + id + "): " +
+                /*System.out.println("Resource capital id (" + id + "): " +
                     getResources()
                         .getStringArray(R.array.state_capitals)
                         [position]);
-                System.out.println("This capital (" + mState.ordinal() + "): " + mState.getCapital());
+                System.out.println("This capital (" + mState.ordinal() + "): " + mState.getCapital());*/
                 mIsCapitalCorrect =
                     getResources()
                         .getStringArray(R.array.state_capitals)
                         [position]
-                    ==
-                    mState.getCapital()
+                    .equalsIgnoreCase(
+                        mState.getCapital()+""
+                    )
                 ;
                 break;
         }
